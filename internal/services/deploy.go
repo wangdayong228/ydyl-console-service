@@ -14,18 +14,20 @@ type DeployService struct {
 }
 
 func NewDeployService(deployConfig configs.DeployConfig) *DeployService {
-	return &DeployService{}
+	return &DeployService{
+		config: deployConfig,
+	}
 }
 
 func (s *DeployService) GetDeployResult() (*dtos.DeployResultResponse, error) {
 	content, err := os.ReadFile(s.config.ResultFile)
 	if err != nil {
-		return nil, errors.WithMessage(err, "failed to read deploy result file")
+		return nil, errors.WithMessagef(err, "failed to read deploy result file: %s", s.config.ResultFile)
 	}
 	var deployResult dtos.DeployResultResponse
 	err = json.Unmarshal(content, &deployResult)
 	if err != nil {
-		return nil, errors.WithMessage(err, "failed to unmarshal deploy result")
+		return nil, errors.WithMessagef(err, "failed to unmarshal deploy result: %s", string(content))
 	}
 	return &deployResult, nil
 }

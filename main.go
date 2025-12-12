@@ -6,8 +6,14 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/wangdayong228/ydyl-console-service/internal/configs"
 	"github.com/wangdayong228/ydyl-console-service/internal/servers"
 )
+
+func init() {
+	configs.Init()
+	servers.Init()
+}
 
 func main() {
 	// services.Start()

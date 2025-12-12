@@ -1,0 +1,4 @@
+server:
+  port: 8080
+deploy:
+  resultFile: /home/ubuntu/workspace/ydyl-deployment-suite/output/cdk-gen-meta.json

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type WrapHttpServer struct {
@@ -38,6 +39,7 @@ func (s *WrapHttpServer) Start() {
 		if err := s.httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
+		logrus.WithField("port", s.Port).Info("server started")
 	}()
 }
 

@@ -1,6 +1,12 @@
 package configs
 
-import "github.com/nft-rainbow/rainbow-goutils/utils/configutils"
+import (
+	"strings"
+
+	"github.com/nft-rainbow/rainbow-goutils/utils/configutils"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+)
 
 var configVal *Config
 
@@ -21,12 +27,16 @@ func Init() {
 	if err := configVal.CheckValid(); err != nil {
 		panic(err)
 	}
+	logrus.WithField("config", configVal).Info("config loaded")
 }
 
 func Get() *Config {
-	return &Config{}
+	return configVal
 }
 
 func (c *Config) CheckValid() error {
+	if strings.TrimSpace(c.Deploy.ResultFile) == "" {
+		return errors.Errorf("deploy result file is not valid: %s", c.Deploy.ResultFile)
+	}
 	return nil
 }
