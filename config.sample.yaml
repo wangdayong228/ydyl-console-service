@@ -1,4 +1,7 @@
 server:
   port: 8080
 deploy:
-  resultFile: /home/ubuntu/workspace/ydyl-deployment-suite/output/cdk-gen-meta.json
+  resultFile: /home/ubuntu/workspace/ydyl-deployment-suite/output/{{.L2Type}}-gen-meta.json
+  opContractFile: /home/ubuntu/workspace/ydyl-deployment-suite/op-work/output/deploy-result-gen.json
+  cdkContractFile: /home/ubuntu/workspace/ydyl-deployment-suite/cdk-work/output/deploy-result-gen.json
+  pipelineStateFile: /home/ubuntu/workspace/ydyl-deployment-suite/output/{{.L2Type}}_pipe.state

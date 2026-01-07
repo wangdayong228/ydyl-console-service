@@ -1,14 +1,21 @@
 package configs
 
 import (
+	"bytes"
 	"strings"
+	"text/template"
 
 	"github.com/nft-rainbow/rainbow-goutils/utils/configutils"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"github.com/wangdayong228/ydyl-console-service/internal/utils"
 )
 
-var configVal *Config
+var (
+	configVal                     *Config
+	resultFilePathTemplate        *template.Template
+	pipelineStateFilePathTemplate *template.Template
+)
 
 type Config struct {
 	Server struct {
@@ -19,7 +26,10 @@ type Config struct {
 }
 
 type DeployConfig struct {
-	ResultFile string `yaml:"resultFile"`
+	ResultFile        string `yaml:"resultFile"`
+	OpContractFile    string `yaml:"opContractFile"`
+	CdkContractFile   string `yaml:"cdkContractFile"`
+	PipelineStateFile string `yaml:"pipelineStateFile"`
 }
 
 func Init() {
@@ -28,6 +38,9 @@ func Init() {
 		panic(err)
 	}
 	logrus.WithField("config", configVal).Info("config loaded")
+
+	resultFilePathTemplate = template.Must(template.New("resultFile").Parse(configVal.Deploy.ResultFile))
+	pipelineStateFilePathTemplate = template.Must(template.New("pipelineState").Parse(configVal.Deploy.PipelineStateFile))
 }
 
 func Get() *Config {
@@ -38,5 +51,38 @@ func (c *Config) CheckValid() error {
 	if strings.TrimSpace(c.Deploy.ResultFile) == "" {
 		return errors.Errorf("deploy result file is not valid: %s", c.Deploy.ResultFile)
 	}
+	if strings.TrimSpace(c.Deploy.PipelineStateFile) == "" {
+		return errors.Errorf("deploy pipeline state file is not valid: %s", c.Deploy.PipelineStateFile)
+	}
 	return nil
+}
+
+func (c *Config) ResolveDeployResultFilePath() (string, error) {
+	l2Type, err := utils.GetL2Type()
+	if err != nil {
+		return "", err
+	}
+	data := map[string]string{
+		"L2Type": l2Type.String(),
+	}
+	var buf bytes.Buffer
+	if err := resultFilePathTemplate.Execute(&buf, data); err != nil {
+		return "", errors.WithMessage(err, "failed to execute resultFile template")
+	}
+	return buf.String(), nil
+}
+
+func (c *Config) ResolvePipelineStateFilePath() (string, error) {
+	l2Type, err := utils.GetL2Type()
+	if err != nil {
+		return "", err
+	}
+	data := map[string]string{
+		"L2Type": l2Type.String(),
+	}
+	var buf bytes.Buffer
+	if err := pipelineStateFilePathTemplate.Execute(&buf, data); err != nil {
+		return "", errors.WithMessage(err, "failed to execute pipelineStateFile template")
+	}
+	return buf.String(), nil
 }

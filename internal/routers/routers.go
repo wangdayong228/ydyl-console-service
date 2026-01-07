@@ -23,6 +23,8 @@ func (p *PublicRouter) Setup(router *gin.Engine) {
 	deploy := v1.Group("deploy")
 	{
 		deploy.GET("/result", p.statusController.GetResult)
+		deploy.GET("/progress", p.statusController.GetPipelineProgress)
+		deploy.GET("/contracts", p.statusController.GetContractAliases)
 	}
 
 	// user.Use(pkgmiddlewares.PaginationMiddleware)
