@@ -1,7 +1,10 @@
 server:
   port: 8080
-deploy:
-  resultFile: /home/ubuntu/workspace/ydyl-deployment-suite/output/{{.L2Type}}-gen-meta.json
-  opContractFile: /home/ubuntu/workspace/ydyl-deployment-suite/op-work/output/deploy-result-gen.json
-  cdkContractFile: /home/ubuntu/workspace/ydyl-deployment-suite/cdk-work/output/deploy-result-gen.json
-  pipelineStateFile: /home/ubuntu/workspace/ydyl-deployment-suite/output/{{.L2Type}}_pipe.state
+resultFile:
+  summary: /home/ubuntu/workspace/ydyl-deployment-suite/output/{{.L2Type}}-gen-meta.json
+  nodeDeploymentContracts:
+    op: /home/ubuntu/workspace/ydyl-deployment-suite/op-work/output/deploy-result-gen.json
+    cdk: /home/ubuntu/workspace/ydyl-deployment-suite/cdk-work/output/deploy-result-gen.json
+    xjst: /home/ubuntu/workspace/ydyl-deployment-suite/xjst-work/output/contracts.json
+  l2counterAndRegisterBridge: /home/ubuntu/workspace/ydyl-deployment-suite/zk-claim-service/output/i_deployCounterAndRegisterBridge_result.json
+  pipelineState: /home/ubuntu/workspace/ydyl-deployment-suite/output/{{.L2Type}}_pipe.state

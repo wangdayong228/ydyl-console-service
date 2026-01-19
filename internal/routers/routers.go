@@ -6,12 +6,12 @@ import (
 )
 
 type PublicRouter struct {
-	statusController *controllers.DeployController
+	resultController *controllers.ResultController
 }
 
 func MustNewPublicRouter() *PublicRouter {
 	return &PublicRouter{
-		statusController: controllers.NewDeployController(),
+		resultController: controllers.NewResultController(),
 	}
 }
 
@@ -20,11 +20,11 @@ func (p *PublicRouter) Setup(router *gin.Engine) {
 	// 使用中间件的路由组
 	v1 := router.Group("v1")
 
-	deploy := v1.Group("deploy")
+	result := v1.Group("result")
 	{
-		deploy.GET("/result", p.statusController.GetResult)
-		deploy.GET("/progress", p.statusController.GetPipelineProgress)
-		deploy.GET("/contracts", p.statusController.GetContractAliases)
+		result.GET("/summary", p.resultController.GetSummary)
+		result.GET("/pipeline-progress", p.resultController.GetPipelineProgress)
+		result.GET("/node-deployment-contracts", p.resultController.GetNodeDeploymentContracts)
 	}
 
 	// user.Use(pkgmiddlewares.PaginationMiddleware)

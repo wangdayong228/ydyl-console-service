@@ -5,7 +5,7 @@ import (
 	"github.com/wangdayong228/ydyl-console-service/internal/constants/enums"
 )
 
-type DeployResultResponse struct {
+type SummaryResultResponse struct {
 	L2Type                            enums.L2Type `json:",omitempty"`
 	L2_RPC_URL                        string       `json:",omitempty"`
 	L1_VAULT_PRIVATE_KEY              common.Hash  `json:",omitempty"`
@@ -23,7 +23,7 @@ type DeployResultResponse struct {
 	L1_BRIDGE_HUB_CONTRACT common.Address `json:",omitempty"`
 }
 
-type ContractAliasesResponse struct {
+type NodeDeploymentContractsResponse struct {
 	L2Type      enums.L2Type
 	L2Bridge    common.Address
 	L1Bridge    common.Address
@@ -31,7 +31,7 @@ type ContractAliasesResponse struct {
 	L1BridgeHub common.Address
 }
 
-type OpContracts struct {
+type OpNodeDeploymentContracts struct {
 	L2CrossDomainMessenger       common.Address `json:"l2CrossDomainMessenger"` // 0x4200000000000000000000000000000000000007
 	L1CrossDomainMessengerProxy  common.Address `json:"l1CrossDomainMessengerProxy"`
 	L1StandardBridgeProxyAddress common.Address `json:"l1StandardBridgeProxyAddress"`
@@ -39,7 +39,7 @@ type OpContracts struct {
 	DisputeGameFactoryProxy      common.Address `json:"disputeGameFactoryProxy"`
 }
 
-type CdkContracts struct {
+type CdkNodeDeploymentContracts struct {
 	PolygonZkEVML2BridgeAddress common.Address
 	PolygonZkEVMBridgeAddress   common.Address
 }
