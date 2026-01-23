@@ -48,59 +48,89 @@ func (s *ResultService) GetPipeProgress() (*dtos.PipeProgressResponse, error) {
 	return utils.ParsePipeProgress(stateFile)
 }
 
-func (s *ResultService) GetNodeDeploymentContracts() (*dtos.NodeDeploymentContractsResponse, error) {
+func (s *ResultService) GetOpNodeDeploymentContracts() (*dtos.OpNodeDeploymentContracts, error) {
+	contractFile, err := configs.Get().GetNodeDeploymentContractFile(enums.L2TypeOp)
+	if err != nil {
+		return nil, err
+	}
+	content, err := os.ReadFile(contractFile)
+	if err != nil {
+		return nil, errors.WithMessagef(err, "failed to read op contract file: %s", contractFile)
+	}
 
+	var contracts dtos.OpNodeDeploymentContracts
+	if err := json.Unmarshal(content, &contracts); err != nil {
+		return nil, errors.WithMessagef(err, "failed to unmarshal op contract file: %s", string(content))
+	}
+	return &contracts, nil
+}
+
+func (s *ResultService) GetCdkNodeDeploymentContracts() (*dtos.CdkNodeDeploymentContracts, error) {
+	contractFile, err := configs.Get().GetNodeDeploymentContractFile(enums.L2TypeCdk)
+	if err != nil {
+		return nil, err
+	}
+	content, err := os.ReadFile(contractFile)
+	if err != nil {
+		return nil, errors.WithMessagef(err, "failed to read cdk contract file: %s", contractFile)
+	}
+
+	var contracts dtos.CdkNodeDeploymentContracts
+	if err := json.Unmarshal(content, &contracts); err != nil {
+		return nil, errors.WithMessagef(err, "failed to unmarshal cdk contract file: %s", string(content))
+	}
+	return &contracts, nil
+}
+
+func (s *ResultService) GetXjstNodeDeploymentContracts() (*dtos.XjstNodeDeploymentContracts, error) {
+	contractFile, err := configs.Get().GetNodeDeploymentContractFile(enums.L2TypeXjst)
+	if err != nil {
+		return nil, err
+	}
+	content, err := os.ReadFile(contractFile)
+	if err != nil {
+		return nil, errors.WithMessagef(err, "failed to read xjst contract file: %s", contractFile)
+	}
+
+	var contracts dtos.XjstNodeDeploymentContracts
+	if err := json.Unmarshal(content, &contracts); err != nil {
+		return nil, errors.WithMessagef(err, "failed to unmarshal xjst contract file: %s", string(content))
+	}
+	return &contracts, nil
+}
+
+func (s *ResultService) GetNodeDeploymentContracts() (*dtos.NodeDeploymentContractsResponse, error) {
 	l2Type, err := utils.GetL2Type()
 	if err != nil {
 		return nil, err
 	}
 
-	deployResult, err := s.GetSummary()
-	if err != nil {
-		return nil, err
-	}
-	result := &dtos.NodeDeploymentContractsResponse{
-		L2Type:      l2Type,
-		L2Counter:   deployResult.L2_COUNTER_CONTRACT,
-		L1BridgeHub: deployResult.L1_BRIDGE_HUB_CONTRACT,
-	}
+	result := &dtos.NodeDeploymentContractsResponse{}
 
 	switch l2Type {
 	case enums.L2TypeXjst:
-		return nil, errors.New("xjst 暂不支持获取合约别名")
-	case enums.L2TypeCdk:
-		contractFile, err := configs.Get().GetNodeDeploymentContractFile(l2Type)
+		contracts, err := s.GetXjstNodeDeploymentContracts()
 		if err != nil {
 			return nil, err
 		}
-		content, err := os.ReadFile(contractFile)
-		if err != nil {
-			return nil, errors.WithMessagef(err, "failed to read cdk contract file: %s", contractFile)
-		}
-		var contracts dtos.CdkNodeDeploymentContracts
-		if err := json.Unmarshal(content, &contracts); err != nil {
-			return nil, errors.WithMessagef(err, "failed to unmarshal cdk contract file: %s", string(content))
-		}
+		result.L2Bridge = contracts.L2StateSender
+		result.L1Bridge = contracts.L1UnifiedBridge
+		return result, nil
 
+	case enums.L2TypeCdk:
+		contracts, err := s.GetCdkNodeDeploymentContracts()
+		if err != nil {
+			return nil, err
+		}
 		result.L2Bridge = contracts.PolygonZkEVML2BridgeAddress
 		result.L1Bridge = contracts.PolygonZkEVMBridgeAddress
 		return result, nil
 
 	case enums.L2TypeOp:
-		contractFile, err := configs.Get().GetNodeDeploymentContractFile(l2Type)
+		contracts, err := s.GetOpNodeDeploymentContracts()
 		if err != nil {
 			return nil, err
 		}
-		content, err := os.ReadFile(contractFile)
-		if err != nil {
-			return nil, errors.WithMessagef(err, "failed to read op contract file: %s", contractFile)
-		}
-
-		var contracts dtos.OpNodeDeploymentContracts
-		if err := json.Unmarshal(content, &contracts); err != nil {
-			return nil, errors.WithMessagef(err, "failed to unmarshal op contract file: %s", string(content))
-		}
-
 		result.L2Bridge = contracts.L2CrossDomainMessenger
 		result.L1Bridge = contracts.L1CrossDomainMessengerProxy
 		return result, nil

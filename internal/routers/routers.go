@@ -25,6 +25,9 @@ func (p *PublicRouter) Setup(router *gin.Engine) {
 		result.GET("/summary", p.resultController.GetSummary)
 		result.GET("/pipeline-progress", p.resultController.GetPipelineProgress)
 		result.GET("/node-deployment-contracts", p.resultController.GetNodeDeploymentContracts)
+		result.GET("/node-deployment-contracts/op", p.resultController.GetOpNodeDeploymentContracts)
+		result.GET("/node-deployment-contracts/cdk", p.resultController.GetCdkNodeDeploymentContracts)
+		result.GET("/node-deployment-contracts/xjst", p.resultController.GetXjstNodeDeploymentContracts)
 	}
 
 	// user.Use(pkgmiddlewares.PaginationMiddleware)

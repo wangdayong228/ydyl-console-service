@@ -33,3 +33,18 @@ func (c *ResultController) GetNodeDeploymentContracts(ctx *gin.Context) {
 	aliases, err := c.deployService.GetNodeDeploymentContracts()
 	ginutils.RenderResponse(ctx, aliases, err)
 }
+
+func (c *ResultController) GetOpNodeDeploymentContracts(ctx *gin.Context) {
+	contracts, err := c.deployService.GetOpNodeDeploymentContracts()
+	ginutils.RenderResponse(ctx, contracts, err)
+}
+
+func (c *ResultController) GetCdkNodeDeploymentContracts(ctx *gin.Context) {
+	contracts, err := c.deployService.GetCdkNodeDeploymentContracts()
+	ginutils.RenderResponse(ctx, contracts, err)
+}
+
+func (c *ResultController) GetXjstNodeDeploymentContracts(ctx *gin.Context) {
+	contracts, err := c.deployService.GetXjstNodeDeploymentContracts()
+	ginutils.RenderResponse(ctx, contracts, err)
+}

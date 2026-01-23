@@ -24,19 +24,16 @@ type SummaryResultResponse struct {
 }
 
 type NodeDeploymentContractsResponse struct {
-	L2Type      enums.L2Type
-	L2Bridge    common.Address
-	L1Bridge    common.Address
-	L2Counter   common.Address
-	L1BridgeHub common.Address
+	L2Bridge common.Address
+	L1Bridge common.Address
 }
 
 type OpNodeDeploymentContracts struct {
-	L2CrossDomainMessenger       common.Address `json:"l2CrossDomainMessenger"` // 0x4200000000000000000000000000000000000007
-	L1CrossDomainMessengerProxy  common.Address `json:"l1CrossDomainMessengerProxy"`
-	L1StandardBridgeProxyAddress common.Address `json:"l1StandardBridgeProxyAddress"`
-	OptimismPortalProxy          common.Address `json:"optimismPortalProxy"`
-	DisputeGameFactoryProxy      common.Address `json:"disputeGameFactoryProxy"`
+	L2CrossDomainMessenger       common.Address // 0x4200000000000000000000000000000000000007
+	L1CrossDomainMessengerProxy  common.Address
+	L1StandardBridgeProxyAddress common.Address
+	OptimismPortalProxy          common.Address
+	DisputeGameFactoryProxy      common.Address
 }
 
 type CdkNodeDeploymentContracts struct {
@@ -44,7 +41,15 @@ type CdkNodeDeploymentContracts struct {
 	PolygonZkEVMBridgeAddress   common.Address
 }
 
+type XjstNodeDeploymentContracts struct {
+	L1SimpleCalculator common.Address
+	L1StateSender      common.Address
+	L1UnifiedBridge    common.Address
+	L2StateSender      common.Address
+	L2UnifiedBridge    common.Address
+}
+
 type PipeProgressResponse struct {
-	LAST_DONE_STEP  int                  `json:"last_done_step"`
-	PIPELINE_STATUS enums.PipelineStatus `json:"pipeline_status"`
+	LAST_DONE_STEP  int
+	PIPELINE_STATUS enums.PipelineStatus
 }
