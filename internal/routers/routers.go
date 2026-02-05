@@ -2,6 +2,9 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	gs "github.com/swaggo/gin-swagger"
+	_ "github.com/wangdayong228/ydyl-console-service/docs"
 	"github.com/wangdayong228/ydyl-console-service/internal/controllers"
 )
 
@@ -16,7 +19,7 @@ func MustNewPublicRouter() *PublicRouter {
 }
 
 func (p *PublicRouter) Setup(router *gin.Engine) {
-
+	router.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 	// 使用中间件的路由组
 	v1 := router.Group("v1")
 

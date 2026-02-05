@@ -1,0 +1,471 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "The responses of the open api in swagger focus on the data field rather than the code and the message fields",
+        "title": "Rainbow-API",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "api.nftrainbow.cn",
+    "basePath": "/",
+    "paths": {
+        "/v1/result/node-deployment-contracts": {
+            "get": {
+                "description": "根据当前 L2 类型（OP/CDK/XJST）读取相应部署合约文件，并返回关键桥合约地址",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Result"
+                ],
+                "summary": "获取节点部署合约地址（按 L2 类型聚合）",
+                "operationId": "GetNodeDeploymentContracts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NodeDeploymentContractsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "599": {
+                        "description": "Business error",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/result/node-deployment-contracts/cdk": {
+            "get": {
+                "description": "读取 CDK 节点部署合约文件并返回合约地址",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Result"
+                ],
+                "summary": "获取 CDK 节点部署合约地址",
+                "operationId": "GetCdkNodeDeploymentContracts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CdkNodeDeploymentContracts"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "599": {
+                        "description": "Business error",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/result/node-deployment-contracts/op": {
+            "get": {
+                "description": "读取 OP 节点部署合约文件并返回合约地址",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Result"
+                ],
+                "summary": "获取 OP 节点部署合约地址",
+                "operationId": "GetOpNodeDeploymentContracts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OpNodeDeploymentContracts"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "599": {
+                        "description": "Business error",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/result/node-deployment-contracts/xjst": {
+            "get": {
+                "description": "读取 XJST 节点部署合约文件并返回合约地址",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Result"
+                ],
+                "summary": "获取 XJST 节点部署合约地址",
+                "operationId": "GetXjstNodeDeploymentContracts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.XjstNodeDeploymentContracts"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "599": {
+                        "description": "Business error",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/result/pipeline-progress": {
+            "get": {
+                "description": "返回部署流水线执行进度（从 pipeline state 文件解析）",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Result"
+                ],
+                "summary": "获取部署流水线进度",
+                "operationId": "GetDeployPipelineProgress",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.PipeProgressResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "599": {
+                        "description": "Business error",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/result/summary": {
+            "get": {
+                "description": "返回部署汇总信息（从部署结果文件读取）",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Result"
+                ],
+                "summary": "获取部署汇总信息",
+                "operationId": "GetDeploySummary",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SummaryResultResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    },
+                    "599": {
+                        "description": "Business error",
+                        "schema": {
+                            "$ref": "#/definitions/ginutils.GinErrorBody"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dtos.CdkNodeDeploymentContracts": {
+            "type": "object",
+            "properties": {
+                "polygonZkEVMBridgeAddress": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "polygonZkEVML2BridgeAddress": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "dtos.NodeDeploymentContractsResponse": {
+            "type": "object",
+            "properties": {
+                "l1Bridge": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2Bridge": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "dtos.OpNodeDeploymentContracts": {
+            "type": "object",
+            "properties": {
+                "disputeGameFactoryProxy": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l1CrossDomainMessengerProxy": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l1StandardBridgeProxyAddress": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2CrossDomainMessenger": {
+                    "description": "0x4200000000000000000000000000000000000007",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "optimismPortalProxy": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "dtos.PipeProgressResponse": {
+            "type": "object",
+            "properties": {
+                "last_DONE_STEP": {
+                    "type": "integer"
+                },
+                "pipeline_STATUS": {
+                    "$ref": "#/definitions/enums.PipelineStatus"
+                }
+            }
+        },
+        "dtos.SummaryResultResponse": {
+            "type": "object",
+            "properties": {
+                "claim_SERVICE_PRIVATE_KEY": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "kurtosis_L1_PREALLOCATED_MNEMONIC": {
+                    "type": "string"
+                },
+                "l1_BRIDGE_HUB_CONTRACT": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l1_CHAIN_ID": {
+                    "type": "string"
+                },
+                "l1_RPC_URL": {
+                    "type": "string"
+                },
+                "l1_VAULT_PRIVATE_KEY": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2Type": {
+                    "$ref": "#/definitions/enums.L2Type"
+                },
+                "l2_CHAIN_ID": {
+                    "type": "string"
+                },
+                "l2_COUNTER_CONTRACT": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2_PRIVATE_KEY": {
+                    "description": "L2_PRIVATE_KEY 用途：\n- L2 上部署 Counter 合约（bridge 注册流程依赖）\n- ydyl-gen-accounts 的付款/部署账户（写入 ydyl-gen-accounts/.env 的 PRIVATE_KEY）",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2_RPC_URL": {
+                    "type": "string"
+                },
+                "l2_VAULT_PRIVATE_KEY": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "dtos.XjstNodeDeploymentContracts": {
+            "type": "object",
+            "properties": {
+                "l1SimpleCalculator": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l1StateSender": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l1UnifiedBridge": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2StateSender": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2UnifiedBridge": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "enums.L2Type": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-varnames": [
+                "L2TypeCdk",
+                "L2TypeOp",
+                "L2TypeXjst"
+            ]
+        },
+        "enums.PipelineStatus": {
+            "type": "string",
+            "enum": [
+                "running",
+                "success",
+                "failed"
+            ],
+            "x-enum-varnames": [
+                "PipelineStatusRunning",
+                "PipelineStatusSuccess",
+                "PipelineStatusFailed"
+            ]
+        },
+        "ginutils.GinErrorBody": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,320 @@
+basePath: /
+definitions:
+  dtos.CdkNodeDeploymentContracts:
+    properties:
+      polygonZkEVMBridgeAddress:
+        items:
+          type: integer
+        type: array
+      polygonZkEVML2BridgeAddress:
+        items:
+          type: integer
+        type: array
+    type: object
+  dtos.NodeDeploymentContractsResponse:
+    properties:
+      l1Bridge:
+        items:
+          type: integer
+        type: array
+      l2Bridge:
+        items:
+          type: integer
+        type: array
+    type: object
+  dtos.OpNodeDeploymentContracts:
+    properties:
+      disputeGameFactoryProxy:
+        items:
+          type: integer
+        type: array
+      l1CrossDomainMessengerProxy:
+        items:
+          type: integer
+        type: array
+      l1StandardBridgeProxyAddress:
+        items:
+          type: integer
+        type: array
+      l2CrossDomainMessenger:
+        description: 0x4200000000000000000000000000000000000007
+        items:
+          type: integer
+        type: array
+      optimismPortalProxy:
+        items:
+          type: integer
+        type: array
+    type: object
+  dtos.PipeProgressResponse:
+    properties:
+      last_DONE_STEP:
+        type: integer
+      pipeline_STATUS:
+        $ref: '#/definitions/enums.PipelineStatus'
+    type: object
+  dtos.SummaryResultResponse:
+    properties:
+      claim_SERVICE_PRIVATE_KEY:
+        items:
+          type: integer
+        type: array
+      kurtosis_L1_PREALLOCATED_MNEMONIC:
+        type: string
+      l1_BRIDGE_HUB_CONTRACT:
+        items:
+          type: integer
+        type: array
+      l1_CHAIN_ID:
+        type: string
+      l1_RPC_URL:
+        type: string
+      l1_VAULT_PRIVATE_KEY:
+        items:
+          type: integer
+        type: array
+      l2_CHAIN_ID:
+        type: string
+      l2_COUNTER_CONTRACT:
+        items:
+          type: integer
+        type: array
+      l2_PRIVATE_KEY:
+        description: |-
+          L2_PRIVATE_KEY 用途：
+          - L2 上部署 Counter 合约（bridge 注册流程依赖）
+          - ydyl-gen-accounts 的付款/部署账户（写入 ydyl-gen-accounts/.env 的 PRIVATE_KEY）
+        items:
+          type: integer
+        type: array
+      l2_RPC_URL:
+        type: string
+      l2_VAULT_PRIVATE_KEY:
+        items:
+          type: integer
+        type: array
+      l2Type:
+        $ref: '#/definitions/enums.L2Type'
+    type: object
+  dtos.XjstNodeDeploymentContracts:
+    properties:
+      l1SimpleCalculator:
+        items:
+          type: integer
+        type: array
+      l1StateSender:
+        items:
+          type: integer
+        type: array
+      l1UnifiedBridge:
+        items:
+          type: integer
+        type: array
+      l2StateSender:
+        items:
+          type: integer
+        type: array
+      l2UnifiedBridge:
+        items:
+          type: integer
+        type: array
+    type: object
+  enums.L2Type:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - L2TypeCdk
+    - L2TypeOp
+    - L2TypeXjst
+  enums.PipelineStatus:
+    enum:
+    - running
+    - success
+    - failed
+    type: string
+    x-enum-varnames:
+    - PipelineStatusRunning
+    - PipelineStatusSuccess
+    - PipelineStatusFailed
+  ginutils.GinErrorBody:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+host: api.nftrainbow.cn
+info:
+  contact: {}
+  description: The responses of the open api in swagger focus on the data field rather
+    than the code and the message fields
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Rainbow-API
+  version: "1.0"
+paths:
+  /v1/result/node-deployment-contracts:
+    get:
+      description: 根据当前 L2 类型（OP/CDK/XJST）读取相应部署合约文件，并返回关键桥合约地址
+      operationId: GetNodeDeploymentContracts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.NodeDeploymentContractsResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "599":
+          description: Business error
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+      summary: 获取节点部署合约地址（按 L2 类型聚合）
+      tags:
+      - Result
+  /v1/result/node-deployment-contracts/cdk:
+    get:
+      description: 读取 CDK 节点部署合约文件并返回合约地址
+      operationId: GetCdkNodeDeploymentContracts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.CdkNodeDeploymentContracts'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "599":
+          description: Business error
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+      summary: 获取 CDK 节点部署合约地址
+      tags:
+      - Result
+  /v1/result/node-deployment-contracts/op:
+    get:
+      description: 读取 OP 节点部署合约文件并返回合约地址
+      operationId: GetOpNodeDeploymentContracts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OpNodeDeploymentContracts'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "599":
+          description: Business error
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+      summary: 获取 OP 节点部署合约地址
+      tags:
+      - Result
+  /v1/result/node-deployment-contracts/xjst:
+    get:
+      description: 读取 XJST 节点部署合约文件并返回合约地址
+      operationId: GetXjstNodeDeploymentContracts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.XjstNodeDeploymentContracts'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "599":
+          description: Business error
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+      summary: 获取 XJST 节点部署合约地址
+      tags:
+      - Result
+  /v1/result/pipeline-progress:
+    get:
+      description: 返回部署流水线执行进度（从 pipeline state 文件解析）
+      operationId: GetDeployPipelineProgress
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PipeProgressResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "599":
+          description: Business error
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+      summary: 获取部署流水线进度
+      tags:
+      - Result
+  /v1/result/summary:
+    get:
+      description: 返回部署汇总信息（从部署结果文件读取）
+      operationId: GetDeploySummary
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SummaryResultResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+        "599":
+          description: Business error
+          schema:
+            $ref: '#/definitions/ginutils.GinErrorBody'
+      summary: 获取部署汇总信息
+      tags:
+      - Result
+schemes:
+- http
+- https
+swagger: "2.0"
