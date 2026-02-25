@@ -42,11 +42,11 @@ type CdkNodeDeploymentContracts struct {
 }
 
 type XjstNodeDeploymentContracts struct {
-	L1SimpleCalculator common.Address
-	L1StateSender      common.Address
-	L1UnifiedBridge    common.Address
-	L2StateSender      common.Address
-	L2UnifiedBridge    common.Address
+	L1SimpleCalculator common.Address `json:"simple_calculator"`
+	L1StateSender      common.Address `json:"state_sender"`
+	L1UnifiedBridge    common.Address `json:"unified_bridge"`
+	L2StateSender      common.Address `json:"l2_state_sender"`
+	L2UnifiedBridge    common.Address `json:"l2_unified_bridge"`
 }
 
 type PipeProgressResponse struct {
