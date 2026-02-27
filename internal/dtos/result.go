@@ -24,8 +24,10 @@ type SummaryResultResponse struct {
 }
 
 type NodeDeploymentContractsResponse struct {
-	L2Bridge common.Address
-	L1Bridge common.Address
+	L1BridgeSendContract    common.Address
+	L1BridgeReceiveContract common.Address
+	L2BridgeSendContract    common.Address
+	L2BridgeReceiveContract common.Address
 }
 
 type OpNodeDeploymentContracts struct {

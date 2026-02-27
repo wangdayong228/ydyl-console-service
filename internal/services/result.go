@@ -113,8 +113,10 @@ func (s *ResultService) GetNodeDeploymentContracts() (*dtos.NodeDeploymentContra
 		if err != nil {
 			return nil, err
 		}
-		result.L2Bridge = contracts.L2StateSender
-		result.L1Bridge = contracts.L1UnifiedBridge
+		result.L1BridgeSendContract = contracts.L1StateSender
+		result.L1BridgeReceiveContract = contracts.L1UnifiedBridge
+		result.L2BridgeSendContract = contracts.L2StateSender
+		result.L2BridgeReceiveContract = contracts.L2UnifiedBridge
 		return result, nil
 
 	case enums.L2TypeCdk:
@@ -122,8 +124,10 @@ func (s *ResultService) GetNodeDeploymentContracts() (*dtos.NodeDeploymentContra
 		if err != nil {
 			return nil, err
 		}
-		result.L2Bridge = contracts.PolygonZkEVML2BridgeAddress
-		result.L1Bridge = contracts.PolygonZkEVMBridgeAddress
+		result.L1BridgeSendContract = contracts.PolygonZkEVMBridgeAddress
+		result.L1BridgeReceiveContract = contracts.PolygonZkEVMBridgeAddress
+		result.L2BridgeSendContract = contracts.PolygonZkEVML2BridgeAddress
+		result.L2BridgeReceiveContract = contracts.PolygonZkEVML2BridgeAddress
 		return result, nil
 
 	case enums.L2TypeOp:
@@ -131,8 +135,10 @@ func (s *ResultService) GetNodeDeploymentContracts() (*dtos.NodeDeploymentContra
 		if err != nil {
 			return nil, err
 		}
-		result.L2Bridge = contracts.L2CrossDomainMessenger
-		result.L1Bridge = contracts.L1CrossDomainMessengerProxy
+		result.L1BridgeSendContract = contracts.L2CrossDomainMessenger
+		result.L1BridgeReceiveContract = contracts.L1CrossDomainMessengerProxy
+		result.L2BridgeSendContract = contracts.L2CrossDomainMessenger
+		result.L2BridgeReceiveContract = contracts.L1CrossDomainMessengerProxy
 		return result, nil
 	default:
 		return nil, errors.Errorf("unsupported L2_TYPE: %v", l2Type)
