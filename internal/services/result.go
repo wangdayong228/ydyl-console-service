@@ -135,10 +135,10 @@ func (s *ResultService) GetNodeDeploymentContracts() (*dtos.NodeDeploymentContra
 		if err != nil {
 			return nil, err
 		}
-		result.L1BridgeSendContract = contracts.L2CrossDomainMessenger
+		result.L1BridgeSendContract = contracts.L1CrossDomainMessengerProxy
 		result.L1BridgeReceiveContract = contracts.L1CrossDomainMessengerProxy
 		result.L2BridgeSendContract = contracts.L2CrossDomainMessenger
-		result.L2BridgeReceiveContract = contracts.L1CrossDomainMessengerProxy
+		result.L2BridgeReceiveContract = contracts.L2CrossDomainMessenger
 		return result, nil
 	default:
 		return nil, errors.Errorf("unsupported L2_TYPE: %v", l2Type)
