@@ -10,10 +10,6 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {},
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -275,13 +271,25 @@ const docTemplate = `{
         "dtos.NodeDeploymentContractsResponse": {
             "type": "object",
             "properties": {
-                "l1Bridge": {
+                "l1BridgeReceiveContract": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "l2Bridge": {
+                "l1BridgeSendContract": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2BridgeReceiveContract": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "l2BridgeSendContract": {
                     "type": "array",
                     "items": {
                         "type": "integer"
@@ -399,31 +407,34 @@ const docTemplate = `{
         "dtos.XjstNodeDeploymentContracts": {
             "type": "object",
             "properties": {
-                "l1SimpleCalculator": {
+                "l1_start_epoch": {
+                    "type": "integer"
+                },
+                "l2_state_sender": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "l1StateSender": {
+                "l2_unified_bridge": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "l1UnifiedBridge": {
+                "simple_calculator": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "l2StateSender": {
+                "state_sender": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "l2UnifiedBridge": {
+                "unified_bridge": {
                     "type": "array",
                     "items": {
                         "type": "integer"
@@ -474,12 +485,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "api.nftrainbow.cn",
-	BasePath:         "/",
-	Schemes:          []string{"http", "https"},
-	Title:            "Rainbow-API",
-	Description:      "The responses of the open api in swagger focus on the data field rather than the code and the message fields",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
+	Schemes:          []string{},
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

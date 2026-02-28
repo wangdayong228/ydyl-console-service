@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   dtos.CdkNodeDeploymentContracts:
     properties:
@@ -13,11 +12,19 @@ definitions:
     type: object
   dtos.NodeDeploymentContractsResponse:
     properties:
-      l1Bridge:
+      l1BridgeReceiveContract:
         items:
           type: integer
         type: array
-      l2Bridge:
+      l1BridgeSendContract:
+        items:
+          type: integer
+        type: array
+      l2BridgeReceiveContract:
+        items:
+          type: integer
+        type: array
+      l2BridgeSendContract:
         items:
           type: integer
         type: array
@@ -98,23 +105,25 @@ definitions:
     type: object
   dtos.XjstNodeDeploymentContracts:
     properties:
-      l1SimpleCalculator:
+      l1_start_epoch:
+        type: integer
+      l2_state_sender:
         items:
           type: integer
         type: array
-      l1StateSender:
+      l2_unified_bridge:
         items:
           type: integer
         type: array
-      l1UnifiedBridge:
+      simple_calculator:
         items:
           type: integer
         type: array
-      l2StateSender:
+      state_sender:
         items:
           type: integer
         type: array
-      l2UnifiedBridge:
+      unified_bridge:
         items:
           type: integer
         type: array
@@ -147,16 +156,8 @@ definitions:
       message:
         type: string
     type: object
-host: api.nftrainbow.cn
 info:
   contact: {}
-  description: The responses of the open api in swagger focus on the data field rather
-    than the code and the message fields
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: Rainbow-API
-  version: "1.0"
 paths:
   /v1/result/node-deployment-contracts:
     get:
@@ -314,7 +315,4 @@ paths:
       summary: 获取部署汇总信息
       tags:
       - Result
-schemes:
-- http
-- https
 swagger: "2.0"
