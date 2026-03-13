@@ -1,9 +1,12 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/openweb3/web3go"
 	"github.com/pkg/errors"
 	"github.com/wangdayong228/ydyl-console-service/internal/configs"
 	"github.com/wangdayong228/ydyl-console-service/internal/constants/enums"
@@ -13,6 +16,17 @@ import (
 
 type ResultService struct {
 	config configs.ResultFileConfig
+}
+
+type xjstBridgeInfoRaw struct {
+	L1AdminAddress     string `json:"l1_admin_address"`
+	L1SimpleCalculator string `json:"l1_simple_calculator_addr"`
+	L1StateSender      string `json:"l1_state_sender_addr"`
+	L1UnifiedBridge    string `json:"l1_unified_bridge_addr"`
+	L2AdminAddress     string `json:"l2_admin_address"`
+	L2SimpleCalculator string `json:"l2_simple_calculator_addr"`
+	L2StateSender      string `json:"l2_state_sender_addr"`
+	L2UnifiedBridge    string `json:"l2_unified_bridge_addr"`
 }
 
 func NewResultService(resultFileConfig configs.ResultFileConfig) *ResultService {
@@ -96,7 +110,32 @@ func (s *ResultService) GetXjstNodeDeploymentContracts() (*dtos.XjstNodeDeployme
 	if err := json.Unmarshal(content, &contracts); err != nil {
 		return nil, errors.WithMessagef(err, "failed to unmarshal xjst contract file: %s", string(content))
 	}
+
+	bridgInfoRaw, err := s.getXjstBridgeInfo()
+	if err != nil {
+		return nil, err
+	}
+
+	contracts.L1SimpleCalculator = common.HexToAddress(bridgInfoRaw.L1SimpleCalculator)
+	contracts.L1StateSender = common.HexToAddress(bridgInfoRaw.L1StateSender)
+	contracts.L1UnifiedBridge = common.HexToAddress(bridgInfoRaw.L1UnifiedBridge)
+	contracts.L2StateSender = common.HexToAddress(bridgInfoRaw.L2StateSender)
+	contracts.L2UnifiedBridge = common.HexToAddress(bridgInfoRaw.L2UnifiedBridge)
+
 	return &contracts, nil
+}
+
+func (s *ResultService) getXjstBridgeInfo() (*xjstBridgeInfoRaw, error) {
+	// 获取 l2 bridges : cast rpc layer2_getBridgeInfo --rpc-url http://44.233.198.160:30010 | jq
+	client := web3go.MustNewClient("http://127.0.0.1:30010")
+
+	bridgInfoRaw := &xjstBridgeInfoRaw{}
+
+	err := client.Provider().CallContext(context.Background(), bridgInfoRaw, "layer2_getBridgeInfo")
+	if err != nil {
+		return nil, errors.WithMessagef(err, "failed to get xjst bridge info")
+	}
+	return bridgInfoRaw, nil
 }
 
 func (s *ResultService) GetNodeDeploymentContracts() (*dtos.NodeDeploymentContractsResponse, error) {
