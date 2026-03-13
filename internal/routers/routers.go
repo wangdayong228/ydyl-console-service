@@ -31,6 +31,7 @@ func (p *PublicRouter) Setup(router *gin.Engine) {
 		result.GET("/node-deployment-contracts/op", p.resultController.GetOpNodeDeploymentContracts)
 		result.GET("/node-deployment-contracts/cdk", p.resultController.GetCdkNodeDeploymentContracts)
 		result.GET("/node-deployment-contracts/xjst", p.resultController.GetXjstNodeDeploymentContracts)
+		result.GET("/node-deployment-contracts/xjst/l1", p.resultController.GetXjstNodeDeploymentL1Contracts)
 	}
 
 	// user.Use(pkgmiddlewares.PaginationMiddleware)

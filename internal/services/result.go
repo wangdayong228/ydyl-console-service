@@ -96,7 +96,7 @@ func (s *ResultService) GetCdkNodeDeploymentContracts() (*dtos.CdkNodeDeployment
 	return &contracts, nil
 }
 
-func (s *ResultService) GetXjstNodeDeploymentContracts() (*dtos.XjstNodeDeploymentContracts, error) {
+func (s *ResultService) GetXjstNodeDeploymentL1Contracts() (*dtos.XjstNodeDeploymentL1Contracts, error) {
 	contractFile, err := configs.Get().GetNodeDeploymentContractFile(enums.L2TypeXjst)
 	if err != nil {
 		return nil, err
@@ -106,9 +106,18 @@ func (s *ResultService) GetXjstNodeDeploymentContracts() (*dtos.XjstNodeDeployme
 		return nil, errors.WithMessagef(err, "failed to read xjst contract file: %s", contractFile)
 	}
 
-	var contracts dtos.XjstNodeDeploymentContracts
+	var contracts dtos.XjstNodeDeploymentL1Contracts
 	if err := json.Unmarshal(content, &contracts); err != nil {
 		return nil, errors.WithMessagef(err, "failed to unmarshal xjst contract file: %s", string(content))
+	}
+	return &contracts, nil
+}
+
+func (s *ResultService) GetXjstNodeDeploymentContracts() (*dtos.XjstNodeDeploymentContracts, error) {
+	var contracts dtos.XjstNodeDeploymentContracts
+	l1Contracts, err := s.GetXjstNodeDeploymentL1Contracts()
+	if err != nil {
+		return nil, err
 	}
 
 	bridgInfoRaw, err := s.getXjstBridgeInfo()
@@ -121,6 +130,7 @@ func (s *ResultService) GetXjstNodeDeploymentContracts() (*dtos.XjstNodeDeployme
 	contracts.L1UnifiedBridge = common.HexToAddress(bridgInfoRaw.L1UnifiedBridge)
 	contracts.L2StateSender = common.HexToAddress(bridgInfoRaw.L2StateSender)
 	contracts.L2UnifiedBridge = common.HexToAddress(bridgInfoRaw.L2UnifiedBridge)
+	contracts.L1StartEpoch = l1Contracts.L1StartEpoch
 
 	return &contracts, nil
 }

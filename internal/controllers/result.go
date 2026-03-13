@@ -117,3 +117,18 @@ func (c *ResultController) GetXjstNodeDeploymentContracts(ctx *gin.Context) {
 	contracts, err := c.deployService.GetXjstNodeDeploymentContracts()
 	ginutils.RenderResponse(ctx, contracts, err)
 }
+
+// @Tags			Result
+// @ID				GetXjstNodeDeploymentL1Contracts
+// @Summary		获取 XJST 节点部署合约地址
+// @Description	读取 XJST 节点部署合约文件并返回合约地址
+// @Produce		json
+// @Success		200	{object}	dtos.XjstNodeDeploymentL1Contracts
+// @Failure		400	{object}	ginutils.GinErrorBody	"Bad request"
+// @Failure		409	{object}	ginutils.GinErrorBody	"Conflict"
+// @Failure		599	{object}	ginutils.GinErrorBody	"Business error"
+// @Router			/v1/result/node-deployment-contracts/xjst/l1 [get]
+func (c *ResultController) GetXjstNodeDeploymentL1Contracts(ctx *gin.Context) {
+	contracts, err := c.deployService.GetXjstNodeDeploymentL1Contracts()
+	ginutils.RenderResponse(ctx, contracts, err)
+}
