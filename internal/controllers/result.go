@@ -12,6 +12,7 @@ import (
 var _ = []any{
 	(*dtos.SummaryResultResponse)(nil),
 	(*dtos.PipeProgressResponse)(nil),
+	(*dtos.GenAccSummaryResponse)(nil),
 	(*dtos.NodeDeploymentContractsResponse)(nil),
 	(*dtos.OpNodeDeploymentContracts)(nil),
 	(*dtos.CdkNodeDeploymentContracts)(nil),
@@ -56,6 +57,21 @@ func (c *ResultController) GetSummary(ctx *gin.Context) {
 func (c *ResultController) GetPipelineProgress(ctx *gin.Context) {
 	progress, err := c.deployService.GetPipeProgress()
 	ginutils.RenderResponse(ctx, progress, err)
+}
+
+// @Tags			Result
+// @ID				GetGenAccSummary
+// @Summary		获取批量生成账户汇总信息
+// @Description	返回 ydyl-gen-accounts 聚合输出中的 summary 字段
+// @Produce		json
+// @Success		200	{object}	dtos.GenAccSummaryResponse
+// @Failure		400	{object}	ginutils.GinErrorBody	"Bad request"
+// @Failure		409	{object}	ginutils.GinErrorBody	"Conflict"
+// @Failure		599	{object}	ginutils.GinErrorBody	"Business error"
+// @Router			/v1/result/gen-acc/summary [get]
+func (c *ResultController) GetGenAccSummary(ctx *gin.Context) {
+	result, err := c.deployService.GetGenAccSummary()
+	ginutils.RenderResponse(ctx, result, err)
 }
 
 // @Tags			Result

@@ -60,3 +60,12 @@ type PipeProgressResponse struct {
 	LAST_DONE_STEP  int
 	PIPELINE_STATUS enums.PipelineStatus
 }
+
+type GenAccSummaryResponse struct {
+	TotalTxSentCount int `json:"totalTxSentCount"`
+	AccountGenerated int `json:"accountGenerated"`
+	AccountRemains   int `json:"accountRemains"`
+	Processing       int `json:"processing"`
+	Success          int `json:"success"`
+	Fail             int `json:"fail"`
+}

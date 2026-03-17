@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"path/filepath"
+	"runtime"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/openweb3/web3go"
@@ -17,6 +19,8 @@ import (
 type ResultService struct {
 	config configs.ResultFileConfig
 }
+
+const genAccSummaryOutputFileName = "progress.all.by-contract.json"
 
 type xjstBridgeInfoRaw struct {
 	L1AdminAddress     string `json:"l1_admin_address"`
@@ -60,6 +64,36 @@ func (s *ResultService) GetPipeProgress() (*dtos.PipeProgressResponse, error) {
 	}
 
 	return utils.ParsePipeProgress(stateFile)
+}
+
+func (s *ResultService) GetGenAccSummary() (*dtos.GenAccSummaryResponse, error) {
+	resultFile, err := resolveDefaultGenAccSummaryFilePath()
+	if err != nil {
+		return nil, err
+	}
+
+	content, err := os.ReadFile(resultFile)
+	if err != nil {
+		return nil, errors.WithMessagef(err, "failed to read gen-acc summary file: %s", resultFile)
+	}
+
+	var payload struct {
+		Summary dtos.GenAccSummaryResponse `json:"summary"`
+	}
+	if err := json.Unmarshal(content, &payload); err != nil {
+		return nil, errors.WithMessagef(err, "failed to unmarshal gen-acc summary file: %s", string(content))
+	}
+
+	return &payload.Summary, nil
+}
+
+func resolveDefaultGenAccSummaryFilePath() (string, error) {
+	_, thisFile, _, ok := runtime.Caller(0)
+	if !ok {
+		return "", errors.New("failed to resolve current file path")
+	}
+	repoRoot := filepath.Clean(filepath.Join(filepath.Dir(thisFile), "../../../.."))
+	return filepath.Join(repoRoot, "ydyl-gen-accounts", "output", genAccSummaryOutputFileName), nil
 }
 
 func (s *ResultService) GetOpNodeDeploymentContracts() (*dtos.OpNodeDeploymentContracts, error) {
