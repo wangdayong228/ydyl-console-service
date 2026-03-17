@@ -92,7 +92,7 @@ func resolveDefaultGenAccSummaryFilePath() (string, error) {
 	if !ok {
 		return "", errors.New("failed to resolve current file path")
 	}
-	repoRoot := filepath.Clean(filepath.Join(filepath.Dir(thisFile), "../../../.."))
+	repoRoot := filepath.Clean(filepath.Join(filepath.Dir(thisFile), "../../.."))
 	return filepath.Join(repoRoot, "ydyl-gen-accounts", "output", genAccSummaryOutputFileName), nil
 }
 
